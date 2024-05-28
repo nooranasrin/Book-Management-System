@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { Book } from '@prisma/client';
+import { CreateBookDto, UpdateBookDto } from './books.dto';
 
 @Controller('books')
 export class BooksController {
@@ -20,23 +21,14 @@ export class BooksController {
   }
 
   @Post()
-  create(
-    @Body()
-    bookDto: {
-      title: string;
-      author: string;
-      year: number;
-      genre: string;
-    },
-  ): Promise<Book> {
+  create(@Body() bookDto: CreateBookDto): Promise<Book> {
     return this.booksService.create(bookDto);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body()
-    bookDto: { title?: string; author?: string; year?: number; genre?: string },
+    @Body() bookDto: UpdateBookDto,
   ): Promise<Book> {
     return this.booksService.update(id, bookDto);
   }
